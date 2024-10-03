@@ -11,18 +11,16 @@ def add_salt_and_pepper_noise(image, noise_percentage):
     for _ in range(num_noise_pixels):
         row = random.randint(0, image.shape[0] - 1)
         col = random.randint(0, image.shape[1] - 1)
-        noisy_image[row, col] = 0 if random.randint(0, 1) == 0 else 255
+        channel = random.randint(0, 2)  # Escolhe o canal de cor (R, G ou B)
+        noisy_image[row, col, channel] = 0 if random.randint(0, 1) == 0 else 255
     
     return noisy_image
-
 
 def mean_filter(src, kernel_size):
     return cv2.blur(src, (kernel_size, kernel_size))
 
-
 def median_filter(src, kernel_size):
     return cv2.medianBlur(src, kernel_size)
-
 
 def mode_filter(src, kernel_size):
     dst = src.copy()
@@ -30,22 +28,23 @@ def mode_filter(src, kernel_size):
 
     for i in range(src.shape[0]):
         for j in range(src.shape[1]):
-            neighbors = []
-            for m in range(-kernel_size // 2, kernel_size // 2 + 1):
-                for n in range(-kernel_size // 2, kernel_size // 2 + 1):
-                    neighbors.append(padded_src[i + m + kernel_size // 2, j + n + kernel_size // 2])
+            for c in range(src.shape[2]):  # Itera sobre os canais de cor
+                neighbors = []
+                for m in range(-kernel_size // 2, kernel_size // 2 + 1):
+                    for n in range(-kernel_size // 2, kernel_size // 2 + 1):
+                        neighbors.append(padded_src[i + m + kernel_size // 2, j + n + kernel_size // 2, c])
 
-            mode_value = Counter(neighbors).most_common(1)[0][0]
-            dst[i, j] = mode_value
+                mode_value = Counter(neighbors).most_common(1)[0][0]
+                dst[i, j, c] = mode_value
 
     return dst
 
-# filtro knn usando a média 
+# Filtro knn usando a média
 def knn_filter(src, kernel_size):
     return mean_filter(src, kernel_size)
 
 def main():
-    image = cv2.imread("input/entrada.jpg", cv2.IMREAD_GRAYSCALE)
+    image = cv2.imread("input/entrada.jpg")
     if image is None:
         print("Erro ao carregar a imagem!")
         return
