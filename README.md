@@ -11,3 +11,7 @@ Análise e Tratamento de Imagens e Vídeos Digitais Trabalho Prático 1
 
 
 `g++ q1.cpp -o test_opencv -I/usr/local/include/opencv4 -L/usr/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs`
+
+g++ q1.cpp -o test_opencv -I/usr/local/include/opencv4 -L/usr/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs
+
+g++ q5.cpp -o test_opencv -I/usr/local/include/opencv4 -L/usr/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs

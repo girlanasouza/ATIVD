@@ -23,7 +23,7 @@ int main() {
 
     Mat imagem_resultado = alterarBrilho(imagem, valor_brilho);
 
-    imwrite("output/saida_imagem_com_brilho_2.jpg", imagem_resultado);
+    imwrite("output/saida_imagem_com_brilho_50.jpg", imagem_resultado);
 
     return 0;
 }
