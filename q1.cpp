@@ -11,7 +11,7 @@ Mat alterarBrilho(const Mat& imagem, int valor_brilho) {
 }
 
 int main() {
-    Mat imagem = imread("entrada.jpg");
+    Mat imagem = imread("input/entrada.jpg");
     if (imagem.empty()) {
         cout << "Erro ao carregar a imagem!" << endl;
         return -1;
@@ -23,7 +23,7 @@ int main() {
 
     Mat imagem_resultado = alterarBrilho(imagem, valor_brilho);
 
-    imwrite("saida_imagem_com_brilho.jpg", imagem_resultado);
+    imwrite("output/saida_imagem_com_brilho_2.jpg", imagem_resultado);
 
     return 0;
 }

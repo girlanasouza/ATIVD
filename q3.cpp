@@ -1,31 +1,30 @@
+/*
+Histograma global. Gerar um vetor para representar o histograma da imagem. Concatenar o histograma de cada banda RGB em 
+um único vetor. Armazenar o resultado em um arquivo texto para facilitar a visualização do resultado.
+*/
+
 #include <opencv2/opencv.hpp>
 #include <iostream>
-#include <fstream>  // Para salvar em arquivo
+#include <fstream> 
 
 using namespace cv;
 using namespace std;
 
-// Função para calcular o histograma de uma imagem
 void calcularHistograma(const Mat& imagem, vector<float>& histograma_concatenado) {
-    // Número de bins (intervalos) do histograma
     int num_bins = 256;
-    float range[] = { 0, 256 };  // Valores de 0 a 255 para as cores
+    float range[] = { 0, 256 };  
     const float* hist_range = { range };
 
-    // Vetores para armazenar os histogramas dos canais B, G e R
     Mat hist_b, hist_g, hist_r;
 
-    // Calcular histograma para cada canal
     calcHist(&imagem, 1, new int[1]{0}, Mat(), hist_b, 1, &num_bins, &hist_range);
     calcHist(&imagem, 1, new int[1]{1}, Mat(), hist_g, 1, &num_bins, &hist_range);
     calcHist(&imagem, 1, new int[1]{2}, Mat(), hist_r, 1, &num_bins, &hist_range);
 
-    // Normalizar os histogramas para ter valores entre 0 e 1
     normalize(hist_b, hist_b, 0, 1, NORM_MINMAX, -1, Mat());
     normalize(hist_g, hist_g, 0, 1, NORM_MINMAX, -1, Mat());
     normalize(hist_r, hist_r, 0, 1, NORM_MINMAX, -1, Mat());
 
-    // Concatenar os três histogramas em um único vetor
     for (int i = 0; i < num_bins; ++i) {
         histograma_concatenado.push_back(hist_b.at<float>(i));  // Canal B
         histograma_concatenado.push_back(hist_g.at<float>(i));  // Canal G
@@ -33,7 +32,6 @@ void calcularHistograma(const Mat& imagem, vector<float>& histograma_concatenado
     }
 }
 
-// Função para salvar o histograma em um arquivo texto
 void salvarHistograma(const vector<float>& histograma, const string& nome_arquivo) {
     ofstream arquivo(nome_arquivo);
 
@@ -42,7 +40,6 @@ void salvarHistograma(const vector<float>& histograma, const string& nome_arquiv
         return;
     }
 
-    // Salvar o histograma no arquivo
     for (const auto& valor : histograma) {
         arquivo << valor << endl;
     }
